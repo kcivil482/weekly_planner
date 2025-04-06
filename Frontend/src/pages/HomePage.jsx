@@ -4,22 +4,48 @@ import { DrawerRoot, DrawerBody, DrawerHeader, DrawerContent,DrawerCloseTrigger,
 import React from 'react'
 import { DndContext, closestCorners } from '@dnd-kit/core'
 import { useState } from 'react'
+import { arrayMove } from '@dnd-kit/sortable'
 
 const HomePage = () => {
 
 
-const [tasks, setTasks]=useState(
-   [ {id:1,Title:"task one"},
-    {id:2,Title:"Task two"},
-    {id:3,Title:"Task three"}]
+const [UnscheduledTasks, setUnscheduledTasks]=useState(
+   [ {id:1,title:"unscheduled task one"},
+    {id:2,title:" unscheduled Task two"},
+    {id:3,title:" unscheduled Task three"}]
   ); 
+  const [tasks, setTasks]=useState(
+    [ {id:1,title:"task one"},
+     {id:2,title:"Task two"},
+     {id:3,title:"Task three"}]
+   ); 
+
+   const getData = ()=>{
+    //fetch unsorted data
+    //use function to sort data to arrays
+    //use multiple use states to manage them each with their own index/id
+    // use id/index to know which useState to refer to in HandleDrage Event and get Task pos
+   }
+   
+  
+  const getTaskPos=id=>tasks.findIndex(task=>task.id==id)
+  const handleDragEnd= event =>{
+    const {active, over}= event
+    if(active.id==over.id) return;
+    setUnscheduledTasks(UnscheduledTasks=>{
+        const originalPos = getTaskPos(active.id)
+        const newPos=getTaskPos(over.id)
+
+        return arrayMove(UnscheduledTasks,originalPos,newPos)
+    })
+  }
   
   return (
     <div>
         <Flex alignItems={'baseline'} >
            <Flex  justifyContent={'space-evenly'}  margin={'20px 20px 20px 40px'} width={'90%'} overflowX={'scroll'}>
-            <DndContext collisionDetection={closestCorners}>
-                <Column Heading={'Unscheduled'} Tasks={tasks} ></Column>
+            <DndContext onDragEnd={handleDragEnd}collisionDetection={closestCorners}>
+                <Column Heading={'Unscheduled'} Tasks={UnscheduledTasks} ></Column>
                 <Column Heading={'Monday'} ></Column>
                 <Column Heading={'Tuesday'} ></Column>
                 <Column Heading={'Wednesday'}></Column>
