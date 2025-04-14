@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+//title, status, description,subtasks,tags,due
 const TaskSchema =new mongoose.Schema({
     title:{
         type: String,
@@ -10,7 +11,7 @@ const TaskSchema =new mongoose.Schema({
         require:true
     },
     description:{
-        type:String,
+        type: String,
         require:false
     },
     subtasks:{
@@ -20,7 +21,7 @@ const TaskSchema =new mongoose.Schema({
     },
     // myabe get rid of this only have Tags for habits this seems hectic
     // If i don't get rid of this have tags be goals so tasks bbuild a percentage bar to monthly goal
-    Tags:{
+    tags:{
         type:String,
         require:false
     },
