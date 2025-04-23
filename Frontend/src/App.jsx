@@ -1,7 +1,7 @@
 import React from 'react';
 import {Routes, Route} from "react-router-dom"
 import Navbar from "./components/Navbar"
-import HomePage from "./pages/HomePage";
+import TaskBoard from "./pages/TaskBoard";
 import CreateTask from './pages/TaskPages/CreateTask.jsx';
 
 function App() {
@@ -10,7 +10,7 @@ function App() {
     <>
       <Navbar></Navbar>
       <Routes>
-        <Route index element={<HomePage/>}/>
+        <Route index element={<TaskBoard/>}/>
          <Route path="/CreateTask" element={<CreateTask/>}/> 
       </Routes>  
     </>

@@ -25,6 +25,10 @@ const TaskSchema =new mongoose.Schema({
         type:String,
         require:false
     },
+    sheduled:{
+        type:String,
+        require:false
+    },
     due:{
         type:Date,
         require:false

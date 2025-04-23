@@ -1,5 +1,6 @@
 import React from 'react'
 import { Box, Flex, Heading } from '@chakra-ui/react';
+import { Avatar, AvatarGroup } from "@chakra-ui/react"
 
 const Navbar = () => {
   return (
@@ -8,9 +9,13 @@ const Navbar = () => {
             Nav Bar
         </Heading>
         <Flex justifyContent={'space-evenly'} minW={'200px'}>
-            <Heading>dark mode</Heading>
-            <Heading>settings</Heading>
-            <Heading>Login</Heading>
+        <Heading> Login </Heading>
+        <AvatarGroup>
+         <Avatar.Root colorPalette={"blue"}>
+          <Avatar.Fallback />
+         <Avatar.Image />
+        </Avatar.Root>
+        </AvatarGroup>
 
         </Flex>
 

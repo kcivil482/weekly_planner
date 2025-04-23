@@ -46,13 +46,14 @@ export const deleteTask = async(req,res)=>{
 };
 
 export const updateTask = async(req,res)=>{
-    const {title, description,subtasks,tags,due}=req.body;
+    const {title, description,subtasks,tags,shecduled,due}=req.body;
     const obj={
         title,
         status:false,
         description,
         subtasks,
         tags,
+        shecduled,
         due
     }
     try{
