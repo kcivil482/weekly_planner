@@ -2,9 +2,8 @@ import Task from "../Models/task.model.js"
 import mongoose from "mongoose"
 
 export const getAllTasks = async(req, res) =>{
-    // const tasks = await Task.find();
-    // res.status(200).send(tasks);
-    res.status(200).send("get all task synced")
+    const tasks = await Task.find();
+    res.status(200).send(tasks);
 };
 
 export const getTask = async(req, res) =>{
@@ -47,6 +46,7 @@ export const deleteTask = async(req,res)=>{
 };
 
 export const updateTask = async(req,res)=>{
+    const {id} = req.params;
     const {title, description,subtasks,tags,shecduled,due}=req.body;
     const obj={
         title,
@@ -58,7 +58,7 @@ export const updateTask = async(req,res)=>{
         due
     }
     try{
-        const task = await Task.findByIdAndUpdate({},obj);
+        const task = await Task.findByIdAndUpdate( id ,obj);
         res.status(200).json(task);
     }catch{
         return res.status(404).json({error:"Task needs a title"})
