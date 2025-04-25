@@ -2,8 +2,9 @@ import Task from "../Models/task.model.js"
 import mongoose from "mongoose"
 
 export const getAllTasks = async(req, res) =>{
-    const tasks = await Task.find();
-    res.status(200).send(tasks);
+    // const tasks = await Task.find();
+    // res.status(200).send(tasks);
+    res.status(200).send("get all task synced")
 };
 
 export const getTask = async(req, res) =>{

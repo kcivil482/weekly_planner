@@ -4,34 +4,34 @@ import mongoose from "mongoose";
 const TaskSchema =new mongoose.Schema({
     title:{
         type: String,
-        require:true
+        required:true
     },
     status:{
-        tpye:Boolean,
-        require:true
+        type:Boolean,
+        required:true
     },
     description:{
         type: String,
-        require:false
+        required:false
     },
     subtasks:{
         //Maybe change this to tasks later but subtask should probably just be strings that can be crossed out in react
         type: [String],
-        require: false
+        required: false
     },
     // myabe get rid of this only have Tags for habits this seems hectic
     // If i don't get rid of this have tags be goals so tasks bbuild a percentage bar to monthly goal
     tags:{
         type:String,
-        require:false
+        required:false
     },
     sheduled:{
         type:String,
-        require:false
+        required:false
     },
     due:{
         type:Date,
-        require:false
+        required:false
     }
 }, {timestamps:true});
 
