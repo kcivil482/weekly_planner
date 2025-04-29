@@ -27,9 +27,8 @@ const TaskBoard = () => {
 
    const getData = ()=>{
     //fetch unsorted data
-    //use function to sort data to arrays
-    //use multiple use states to manage them each with their own index/id
-    // use id/index to know which useState to refer to in HandleDrage Event and get Task pos
+    //use function to sort data into taskboard usestate
+      
    }
    
    const handleDragEnd = (event) => {
