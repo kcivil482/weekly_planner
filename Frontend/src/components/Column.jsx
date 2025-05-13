@@ -13,6 +13,8 @@ const Column = ({id, Heading, Tasks}) => {
   const {setNodeRef} = useDroppable({
     id: id,
   });
+      console.log(id)
+
   const HandleClick = () =>{
     //use getTask here
   }

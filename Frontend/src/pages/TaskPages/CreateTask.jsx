@@ -26,7 +26,7 @@ const CreateTask = () => {
         <Editable.Root
         margin={"2px 5px"}
         border={"1px solid grey"}
-        Width={"200px"}
+        width={"200px"}
         maxWidth="40%"
           value={name}
          onValueChange={(e) => setName(e.value)}

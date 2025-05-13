@@ -21,7 +21,7 @@ const TaskBoard = () => {
       Sunday:[]
     }
    );
-
+   const cols = TaskBoard? Object.keys(TaskBoard):[];
    const taskIds = TaskBoard ? Object.entries(TaskBoard).map(task => task.id) : [];
    
 
@@ -30,17 +30,37 @@ const TaskBoard = () => {
     //use function to sort data into taskboard usestate
       
    }
+   const HandleOnDragOver = (event) =>{
+    const { active, over } = event;
+    if (!active?.id || !over?.id) return;
+
+    const activeId = active.id;
+    const overId = over.id;
+
+    let sourceCol ;
+    for (const [col] of Object.entries(TaskBoard)) {
+      console.log(overId)
+      if (overId === col) {
+        console.log("working");
+        sourceCol = col;
+        break;
+      }
+    }
+   }
    
    const handleDragEnd = (event) => {
+    console.log(event)
+
     const { active, over } = event;
     if (!active?.id || !over?.id) return;
   
     const activeId = active.id;
     const overId = over.id;
-  
+
     // Find the source column
     let sourceCol, sourceIdx;
     for (const [col, tasks] of Object.entries(TaskBoard)) {
+      console.log(col, tasks)
       const index = tasks.findIndex(task => task.id === activeId);
       if (index !== -1) {
         sourceCol = col;
@@ -49,7 +69,8 @@ const TaskBoard = () => {
       }
     }
   
-    // Determine if overId is a task or column
+    // Determine if overId is a task or column'
+    console.log(TaskBoard[overId]!== undefined)
     const isOverAColumn = TaskBoard[overId] !== undefined;
   
     let destCol, destIdx;
@@ -104,8 +125,8 @@ const TaskBoard = () => {
     <div>
         <Flex alignItems={'baseline'} >
            <Flex  justifyContent={'space-evenly'}  margin={'20px 20px 20px 40px'} width={'90%'} overflowX={'scroll'}>
-            <DndContext onDragEnd={handleDragEnd} collisionDetection={closestCorners}>
-            <SortableContext items={taskIds} strategy={verticalListSortingStrategy} >
+            <DndContext onDragEnd={handleDragEnd} onDragOver={HandleOnDragOver} collisionDetection={closestCorners}>
+            <SortableContext items={cols} strategy={verticalListSortingStrategy} >
 
                 {
                 Object.keys(TaskBoard).map(column =>
