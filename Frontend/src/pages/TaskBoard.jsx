@@ -21,13 +21,12 @@ const TaskBoard = () => {
 //       Sunday:[]
 //   }
 // )
-  const [items, setItems] = useState([]);
 
    const [TaskBoard, setTaskBoard]=useState(
     {
-      A:[{id:"A1",title:"Task two",scheduled:null}, {id:"A2",title:"Task 4",scheduled:null}],
-      B:[{id:"B1",title:"Task one",scheduled:"Monday"}],
-      c:[{id:"C1",title:"Task 3",scheduled:"Tuesday"}],
+      A:[{id:"A1",task:"Task two"}, {id:"A2",task:"Task 4"}],
+      B:[{id:"B1",task:"Task one"}],
+      C:[{id:"C1",task:"Task 3"}],
       D:[],
       E:[],
       F:[],
@@ -35,7 +34,7 @@ const TaskBoard = () => {
       H:[]
     }
    );
-
+const allTaskIds = Object.values(TaskBoard).flat().map(task => task.id);
    const taskIds = TaskBoard ? Object.entries(TaskBoard).map(task => task.id) : [];
    
 
@@ -44,136 +43,78 @@ const TaskBoard = () => {
     //use function to sort data into taskboard usestate
       
    }
-   const HandleOnDragOver = (event) =>{
+   const handleDragEnd = (event) =>{
     const { active, over } = event;
     if (!active?.id || !over?.id) return;
 
-    const activeId = active.id;
-    const overId = over.id;
+    let sourceCol, sourceIdx, destCol, destIdx;
 
-    let sourceCol = activeId[0] ;
-    let overCol = overId[0] ;
-
-    if( sourceCol === overCol) return;
-
-    let task = TaskBoard[sourceCol].find(item => item.id === activeId);
-
-    console.log(sourceCol, overCol)
-    if(!task) return;
-    console.log(TaskBoard[overCol]);
-    const updatedTask = {
-        ...task,
-        id: overCol + (TaskBoard[overCol].length + 1),
-      };
-      setTaskBoard(prev=>({
-            ...prev,
-            [sourceCol]: prev[sourceCol].filter(elem => elem.id !== activeId),
-            [overCol]: [...prev[overCol], updatedTask],
-
-
-          }));
-      console.log(TaskBoard)
+    // Find source column and index
+    for (const [col, tasks] of Object.entries(TaskBoard)) {
+      const idx = tasks.findIndex(task => task.id === active.id);
+      if (idx !== -1) {
+        sourceCol = col;
+        sourceIdx = idx;
+        break;
+      }
     }
-   
-   const handleDragEnd = (event) => {
 
-    
-    const {active, over} = event;
-    if (active.id !== over.id) {
-      setItems([...TaskBoard[active.id[0]]]);
-      setItems((items) => {
-          const oldIndex = items.indexOf(active.id);
-          const newIndex = items.indexOf(over.id);
-          
-          return arrayMove(items, oldIndex, newIndex);
-        });
+    // Find destination column and index
+    for (const [col, tasks] of Object.entries(TaskBoard)) {
+      const idx = tasks.findIndex(task => task.id === over.id);
+      if (idx !== -1) {
+        destCol = col;
+        destIdx = idx;
+        break;
+      }
+    }
 
-      setTaskBoard(prev=>{
+    // If dropped on empty column, over.id will be the column id
+    if (!destCol && TaskBoard[over.id]) {
+      destCol = over.id;
+      destIdx = TaskBoard[destCol].length;
+      }
+
+    if (!sourceCol || !destCol) return;
+    if (sourceCol === destCol && sourceIdx === destIdx) return;
+
+    const taskToMove = TaskBoard[sourceCol][sourceIdx];
+
+    if (sourceCol === destCol) {
+      // Reorder within the same column
+      const updated = arrayMove(TaskBoard[sourceCol], sourceIdx, destIdx);
+      setTaskBoard(prev => ({
         ...prev,
-        [active.id[0]]: [...items]
-      })
-      
-    }
-  }
-    // const { active, over } = event;
-    // if (!active?.id || !over?.id) return;
-  
-    // const activeId = active.id;
-    // const overId = over.id;
+        [sourceCol]: updated,
+      }));
+    } else {
+      // Move to different column
+      const sourceList = [...TaskBoard[sourceCol]];
+      const destList = [...TaskBoard[destCol]];
 
-    // // Find the source column
-    // let sourceCol, sourceIdx;
-    // for (const [col, tasks] of Object.entries(TaskBoard)) {
-    //   console.log(col, tasks)
-    //   const index = tasks.findIndex(task => task.id === activeId);
-    //   if (index !== -1) {
-    //     sourceCol = col;
-    //     sourceIdx = index;
-    //     break;
-    //   }
-    // }
-  
-    // // Determine if overId is a task or column'
-    // console.log(TaskBoard[overId]!== undefined)
-    // const isOverAColumn = TaskBoard[overId] !== undefined;
-  
-    // let destCol, destIdx;
-  
-    // if (isOverAColumn) {
-    //   // If dropped on a column (empty space), add to end
-    //   destCol = overId;
-    //   destIdx = TaskBoard[destCol].length;
-    // } else {
-    //   // Dropped on another task
-    //   for (const [col, tasks] of Object.entries(TaskBoard)) {
-    //     const index = tasks.findIndex(task => task.id === overId);
-    //     if (index !== -1) {
-    //       destCol = col;
-    //       destIdx = index;
-    //       break;
-    //     }
-    //   }
-    // }
-  
-    // if (!sourceCol || !destCol) return;
-    // if (sourceCol === destCol && sourceIdx === destIdx) return;
-  
-    // const taskToMove = TaskBoard[sourceCol][sourceIdx];
-  
-    // // Same column: reorder
-    // if (sourceCol === destCol) {
-    //   const updated = arrayMove(TaskBoard[sourceCol], sourceIdx, destIdx);
-    //   setTaskBoard(prev => ({
-    //     ...prev,
-    //     [sourceCol]: updated,
-    //   }));
-    // } else {
-    //   // Different columns: move
-    //   const sourceList = [...TaskBoard[sourceCol]];
-    //   const destList = [...TaskBoard[destCol]];
-  
-    //   sourceList.splice(sourceIdx, 1);
-    //   destList.splice(destIdx, 0, taskToMove);
-  
-    //   setTaskBoard(prev => ({
-    //     ...prev,
-    //     [sourceCol]: sourceList,
-    //     [destCol]: destList,
-    //   }));
-    // }
-  
+      sourceList.splice(sourceIdx, 1);
+      destList.splice(destIdx, 0, { ...taskToMove, scheduled: null }); // Optionally update scheduled
+
+      setTaskBoard(prev => ({
+        ...prev,
+        [sourceCol]: sourceList,
+        [destCol]: destList,
+      }));
+    }
+ 
+   }
 
   
   return (
     <div>
         <Flex alignItems={'baseline'} >
            <Flex  justifyContent={'space-evenly'}  margin={'20px 20px 20px 40px'} width={'90%'} overflowX={'scroll'}>
-            <DndContext onDragEnd={handleDragEnd} onDragOver={HandleOnDragOver} collisionDetection={closestCorners}>
+            <DndContext onDragEnd={handleDragEnd} collisionDetection={closestCorners}>
 
                 {
                 Object.entries(TaskBoard).map(([column, tasks]) =>
                 (
-                  <SortableContext items={tasks} strategy={verticalListSortingStrategy} >
+                  <SortableContext kkey={column} items={allTaskIds} strategy={verticalListSortingStrategy} >
 
                       <Column key={column} id={column} Heading={column} Tasks={tasks}></Column>
                   </SortableContext>

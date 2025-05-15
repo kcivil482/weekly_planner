@@ -18,11 +18,11 @@ export const getTask = async(req, res) =>{
 };
 
 export const createTask = async(req,res)=>{
-    const {title, description,subtasks,tags,due}=req.body;
+    const {columnId,task,subtasks,tags,due}=req.body;
     const obj={
-        title,
+        columnId,
+        task,
         status:false,
-        description,
         subtasks,
         tags,
         due
@@ -47,14 +47,13 @@ export const deleteTask = async(req,res)=>{
 
 export const updateTask = async(req,res)=>{
     const {id} = req.params;
-    const {title, description,subtasks,tags,shecduled,due}=req.body;
+    const {columnId,task,subtasks,tags,due}=req.body;
     const obj={
-        title,
+        columnId,
+        task,
         status:false,
-        description,
         subtasks,
         tags,
-        shecduled,
         due
     }
     try{
