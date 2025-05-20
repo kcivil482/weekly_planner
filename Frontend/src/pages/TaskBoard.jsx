@@ -9,18 +9,6 @@ import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-ki
 
 const TaskBoard = () => {
 
-// const [TaskBoard, setTaskBoard]=useState(
-//   {
-//     Unscheduled: [{id:A2,title:"Task two",scheduled:null}, {id:4,title:"Task 4",scheduled:null}],
-//     Monday:[ {id:1,title:"task one",scheduled:"Monday"}],
-//       Tuesday:[ {id:3,title:"Task 3",scheduled:"Tuesday"}],
-//       Wednesday: [],
-//       Thursday:[],
-//       Friday:[],
-//       Saturday:[],
-//       Sunday:[]
-//   }
-// )
 
    const [TaskBoard, setTaskBoard]=useState(
     {
@@ -114,7 +102,7 @@ const allTaskIds = Object.values(TaskBoard).flat().map(task => task.id);
                 {
                 Object.entries(TaskBoard).map(([column, tasks]) =>
                 (
-                  <SortableContext kkey={column} items={allTaskIds} strategy={verticalListSortingStrategy} >
+                  <SortableContext key={column} items={allTaskIds} strategy={verticalListSortingStrategy} >
 
                       <Column key={column} id={column} Heading={column} Tasks={tasks}></Column>
                   </SortableContext>
