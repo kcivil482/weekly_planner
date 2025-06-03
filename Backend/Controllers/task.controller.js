@@ -1,9 +1,12 @@
-import Task from "../Models/task.model.js"
+import {Task, Board} from "../Models/task.model.js"
+
 import mongoose from "mongoose"
 
 export const getAllTasks = async(req, res) =>{
+
     const tasks = await Task.find();
     res.status(200).send(tasks);
+    console.log(" Get request made ");
 };
 
 export const getTask = async(req, res) =>{

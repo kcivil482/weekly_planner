@@ -11,6 +11,7 @@ const TaskSchema =new mongoose.Schema({
         required:true
     },
     status:{
+        type: Boolean,
         required:true
     },
     subtasks:{
@@ -31,6 +32,45 @@ const TaskSchema =new mongoose.Schema({
 }, {timestamps:true});
 
 //creates task collection
-const Task = mongoose.model('Task',TaskSchema);
-export default Task;
+export const Task = mongoose.model('Task',TaskSchema);
+
+const BoardSchema =new mongoose.Schema({
+        groups:{
+            A:{
+                type:[mongoose.mongoose.ObjectId],
+                ref:'Task'
+            },
+            B:{
+                type:[mongoose.mongoose.ObjectId],
+                ref:'Task'
+            },
+            C:{
+                type:[mongoose.mongoose.ObjectId],
+                ref:'Task'
+            },
+            D:{
+                type:[mongoose.mongoose.ObjectId],
+                ref:'Task'
+            },
+            E:{
+                type:[mongoose.mongoose.ObjectId],
+                ref:'Task'
+            },
+            F:{
+                type:[mongoose.mongoose.ObjectId],
+                ref:'Task'
+            },
+            G:{
+                type:[mongoose.mongoose.ObjectId],
+                ref:'Task'
+            },
+            H:{
+                type:[mongoose.mongoose.ObjectId],
+                ref:'Task'
+            }
+        }
+},{timestamps:true});
+
+export const Board = mongoose.model('Board',BoardSchema);
+
 

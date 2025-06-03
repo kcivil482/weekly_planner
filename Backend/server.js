@@ -1,6 +1,8 @@
 import express from "express";
 import dotenv from "dotenv";
 import taskRoutes from "./Routes/task.routes.js"
+import boardRoutes from "./Routes/board.routes.js"
+
 import mongoose from "mongoose";
 import cors from "cors"
 
@@ -13,6 +15,8 @@ const MONGODB_URI = process.env.MONGODB_URI;
 app.use(cors())
 app.use(express.json());
 app.use("/Tasks",taskRoutes);
+app.use("/Board",boardRoutes);
+
 
 app.get("/",(req,res)=>{
     res.send("server ready");

@@ -8,8 +8,6 @@ import { Avatar, AvatarGroup, Tabs, Link } from "@chakra-ui/react"
 
 const Navbar = () => {
   const pathname = window.location.pathname.substring(1);
-
-  console.log( pathname)
   return (
     <Flex justifyContent={'space-between'} margin={'20px'}>
         <Heading minW={'200px'}>

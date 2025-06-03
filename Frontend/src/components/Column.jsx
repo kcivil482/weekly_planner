@@ -2,14 +2,10 @@ import React from 'react'
 import TaskSmall from './TaskSmall'
 import {  Text, Flex,Button, Box } from '@chakra-ui/react'
 import { Link } from 'react-router-dom';
-import {
-  SortableContext,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
 import { useDroppable } from '@dnd-kit/core';
 
 
-const Column = ({id, Heading, Tasks}) => {
+const Column = ({id, Heading, Tasks, colNum}) => {
   const Headings ={A:"Unscheduled",B:"Monday", C:"Tuesday",D:"Wednesday",E:"Thursday",F:"Friday",G:"Saturday",H:"Sunday"}
   const {setNodeRef} = useDroppable({
     id: id,
@@ -23,10 +19,12 @@ const Column = ({id, Heading, Tasks}) => {
       <Heading>{Headings[Heading]}</Heading>
       </Box>
       {
-        (Tasks)? Tasks.map((task,index)=><TaskSmall key={task.id} id={task.id} task={task.task} />): (Heading=='A')? <><Button><Link to="/CreateTask">Create Task</Link></Button><Text justifySelf={'center'}>Create a Task to get started</Text></>: null
-      }
+        (Tasks)? Tasks.map((task)=><TaskSmall key={task.id} Task={task} />): (Heading=='A')? <><Button><Link to="/CreateTask">Create Task</Link></Button><Text justifySelf={'center'}>Create a Task to get started</Text></>: null
+      } 
       { 
-        Heading=="A"?<Link to = "/CreateTask"> Add Task </Link>: null     
+        Heading=="A"?<Link to = "/CreateTask" 
+          state={{colNum : colNum}}
+         > Add Task </Link>: null     
       }       
     </ Flex> 
 
