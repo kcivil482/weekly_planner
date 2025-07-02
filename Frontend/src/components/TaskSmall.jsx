@@ -7,24 +7,22 @@ import { Link } from "@chakra-ui/react"
 
 
 
-const TaskSmall = ({Task}) => {
-  const {id, task, status} = {...Task};
+const TaskSmall = ({id,Task}) => {
+  const { task, status} = {...Task};
   const {attributes, listeners, setNodeRef, transform, transition}= useSortable({id})
   const style={
     transition,
     transform: CSS.Transform.toString(transform),
   }
-  const handleDoubleClick = () =>{
-    console.log("hi");
-  }
+
  
   const completedStyle ={
     textDecoration: "line-through",
   }
   return (
     <Flex  style={style} ref={setNodeRef} {...attributes} {...listeners} justifyContent={"center"} alignItems={"center"} margin={" 8px 0px"} width={"85%"} >
-      <Box onDoubleClick={()=>handleDoubleClick()} borderRadius="5px" borderWidth="1px" style={status?completedStyle:null} borderColor="border.disabled" color="fg.disabled" width={"100%"} p="5px" >
-        <Text marginX="5px"textAlign="left" >{task} Task id : {id}</Text>
+      <Box  borderRadius="5px" borderWidth="1px" style={status?completedStyle:null} borderColor="border.disabled" color="fg.disabled" width={"80%"} p="5px" >
+        <Text marginX="5px"textAlign="left" >{task} id: {id}</Text>
         <Link href="/Task/:id">Edit </Link>
        </Box>
       <Checkbox.Root>

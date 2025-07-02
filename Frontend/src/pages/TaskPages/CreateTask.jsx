@@ -7,44 +7,17 @@ import { useLocation } from 'react-router-dom';
 
 const CreateTask = () => {
     const location = useLocation();
-
+  const [id, setID]=useState("")
   const idNum = location.state.colNum ;
   const [task, setTask] = useState("Click to edit")
   const [subtask, setSubTask]=useState("")
   const [subtasks, setSubTasks] = useState([])
-// columnId:{
-//         type:String,
-//         required:true
-//     },
-//     task:{
-//         type: String,
-//         required:true
-//     },
-//     status:{
-//         type: Boolean,
-//         required:true
-//     },
-//     subtasks:{
-//         //Maybe change this to tasks later but subtask should probably just be strings that can be crossed out in react
-//         type: [String],
-//         required: false
-//     },
-//     // myabe get rid of this only have Tags for habits this seems hectic
-//     // If i don't get rid of this have tags be goals so tasks bbuild a percentage bar to monthly goal
-//     tags:{
-//         type: String,
-//         required:false
-//     },
-//     due:{
-//         type:Date,
-//         required:false
-//     }
+
 
   const navigate = useNavigate();
 
   const createTask = async () => {
       const data = {
-        columnId : 'A'+(idNum+1),
         task,
         status: false,
         subtasks,
@@ -64,17 +37,41 @@ const CreateTask = () => {
         }
 
         const json = await response.json();
+        console.log("Create Tasks", json);
+      
+        updateBoard(json._id)
+      } catch (error) {
+        console.error(error.message);
+      }
+    }
+
+    const updateBoard = async (id) =>{
+      try {
+        const url = import.meta.env.VITE_API_URL;
+
+        const response = await fetch(url+"Board"+"/"+id,{
+          method:"PATCH",
+          headers:{
+            'Content-Type':'application/json',
+          }
+        });
+        if (!response.ok) {
+          throw new Error(`Response status: ${response.status}`);
+        }
+
+        const json = await response.json();
         console.log(json);
       } catch (error) {
         console.error(error.message);
       }
+
+
     navigate(-1);
   };
 
   const deleteTask = () => {
     navigate(-1);
   };
-
 
   return (
     <Flex flexDir="column" alignItems="center">

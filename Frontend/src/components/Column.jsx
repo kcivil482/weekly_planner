@@ -19,7 +19,7 @@ const Column = ({id, Heading, Tasks, colNum}) => {
       <Heading>{Headings[Heading]}</Heading>
       </Box>
       {
-        (Tasks)? Tasks.map((task)=><TaskSmall key={task.id} Task={task} />): (Heading=='A')? <><Button><Link to="/CreateTask">Create Task</Link></Button><Text justifySelf={'center'}>Create a Task to get started</Text></>: null
+        (Tasks)? Tasks.map((task)=><TaskSmall key={task._id} id={task._id} Task={task} />): (Heading=='A')? <><Button><Link to="/CreateTask">Create Task</Link></Button><Text justifySelf={'center'}>Create a Task to get started</Text></>: null
       } 
       { 
         Heading=="A"?<Link to = "/CreateTask" 

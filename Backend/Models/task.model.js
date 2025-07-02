@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 const TaskSchema =new mongoose.Schema({
     columnId:{
         type:String,
-        required:true
+        required:false
     },
     task:{
         type: String,

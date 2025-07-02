@@ -1,5 +1,5 @@
 import {Task, Board} from "../Models/task.model.js"
-
+import { ObjectId } from 'mongoose';
 import mongoose from "mongoose"
 
 // export const getAllTasks = async(req, res) =>{
@@ -8,6 +8,10 @@ import mongoose from "mongoose"
 // };
 
 export const getBoard = async(req, res) =>{
+    /**Cases:
+    * if the board doesn't alraedy exist in database make a new one
+    *  
+    */
    const board  = await Board.findOne();
    if(!board){
     const newBoard= new Board({
@@ -19,29 +23,89 @@ export const getBoard = async(req, res) =>{
             E:[],
             F:[],
             G:[],
-            H:[],
+            H:[]
         }
     })
     newBoard.save();
     const board  = await Board.findOne();
    }
-
+   console.log(board)
    res.status(200).send( board);
 };
 
-export const updateBoard = async(req,res)=>{
-    try{
-        const board = await Board.findOne();
-        const test = await Task.findOne();
+export const AddTask = async(req,res)=>{
+    /**Cases:
+     * if no id is given
+     * no matching id in database
+     * if that id is already in a group in Board
+    */
 
-        board.groups.A.push(test._id)
+    try{
+        const {id} = req.params;
+        const board  = await Board.findOne();
+
+        console.log(id)
+        if( !id || board.groups.A.includes(id))
+        { return res.status(404).json({error:"no id found or id already in database" + id})}
+        board.groups.A.push(id)
         await board.save();
 
         res.status(200).json(board);
     }catch{
-        return res.status(404).json({error:"Board not updated"})
+        return res.status(404).json({error:"Board not updated "})
     }
 };
+
+export const deleteTask = async (req,res)=>{
+    /**Cases:
+     * id not given
+     * 
+    */
+    try{
+        const {id} = req.params
+        const keys = ["A","B","C","D","E","F","G","H"]
+        const board = await Board.findOne()
+        console.log(board, id)
+        for (const key of keys) {
+            if (board.groups[key].includes(id)) {
+                const temp=board.groups[key];
+                const newlist = board.groups[key].filter(item => !(item.toString().includes(id)))
+                board.groups[key] = newlist  
+                await board.save()            
+                console.log(board)  
+            }
+        }
+         res.status(200).json(board)
+    }catch{
+        res.status(404).json({error:" Board not updated check id"})
+    }
+ 
+}
+
+export const updateBoard = async (req,res)=>{
+    /**
+     * Cases:
+     * 
+     */
+    try{
+        const board = await Board.findOne();
+        const { groups } = req.body
+        console.log("update board groups: " , groups, typeof(groups))
+        if(!groups) {return res.status(404).json({error:" Board data sent incorrectly"})}
+        console.log(board["groups"])
+
+        board["groups"] =JSON.parse(groups)
+        await board.save()
+        console.log(board)
+
+
+        res.status(200).json(board)
+    } catch{
+        return res.status(404).json({error:"board not updated"})
+    }
+
+}
+
 
 //update board
 
