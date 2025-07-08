@@ -61,9 +61,7 @@ const TaskBoard = () => {
   }
       
   const sortData = (data) =>{
-    // console.log("Groups here:" ,groups)
-    // console.log("data here: ", data)
-    // console.log(data.filter(elem => groups.A?.includes(elem._id)))
+
     const newTaskBoard = {
       A: data.filter(elem => groups.A?.includes(elem._id)),
       B: data.filter(elem => groups.B?.includes(elem._id)),
@@ -74,14 +72,14 @@ const TaskBoard = () => {
       G: data.filter(elem => groups.G?.includes(elem._id)),
       H: data.filter(elem => groups.H?.includes(elem._id))
     };
-    console.log("Task board here :",newTaskBoard)
+    console.log("Task board here :", newTaskBoard)
     setTaskBoard(newTaskBoard)
   } 
 
   const updateData = async () =>{
     const url = import.meta.env.VITE_API_URL;
-    const data = { groups : {TaskBoard}}
-    console.log(data)
+    const data = { groups : {...TaskBoard}}
+    console.log("data being sent: ",data)
     try {
       const response = await fetch(url+"Board",{
         method:"PUT",
@@ -102,32 +100,22 @@ const TaskBoard = () => {
   const allTaskIds = Object.values(TaskBoard).flat().map(task => task._id);
   const lengthOfColumnA = TaskBoard['A'].length;
 
-  useEffect(() => {
-    isLoading(true)
-    getTasks();
-    getBoard();
-    // if(loading === false){
-    //   console.log(loading)
-    //   sortData(TaskList);
 
-    // }
+useEffect(() => {
+  isLoading(true)
+  getTasks();
+  getBoard();
+},[])
 
+useEffect(() => {
+  sortData(TaskList);
+}, [groups]); 
 
-   },[])
-   
-   useEffect(() => {
-        // console.log("TaskList or groups updated, calling sortData");
-        // console.log("TaskList:", TaskList);
-        // console.log("Groups:", groups);
-        sortData(TaskList);
-        // console.log(TaskBoard)
-        updateData()
-
-  }, [TaskList , groups]); 
-
-  // useEffect(() => {
-  // }, [TaskBoard])
-  
+useEffect(() => {
+  if (!loading) {
+    updateData();
+  }
+}, [TaskBoard]);
 
   const handleDragEnd = (event) =>{
     const { active, over } = event;
@@ -190,6 +178,7 @@ const TaskBoard = () => {
         [destCol]: destList,
       }));
     }
+    console.log("Taskboard after drag event:", TaskBoard)
    }
 
   

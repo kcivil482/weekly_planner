@@ -2,13 +2,10 @@ import { Container, Editable, Heading, Flex, Button, Text } from '@chakra-ui/rea
 import { useState } from 'react'
 import React from 'react'
 import { useNavigate } from "react-router-dom";
-import { useLocation } from 'react-router-dom';
 
 
 const CreateTask = () => {
-    const location = useLocation();
-  const [id, setID]=useState("")
-  const idNum = location.state.colNum ;
+
   const [task, setTask] = useState("Click to edit")
   const [subtask, setSubTask]=useState("")
   const [subtasks, setSubTasks] = useState([])
@@ -46,6 +43,8 @@ const CreateTask = () => {
     }
 
     const updateBoard = async (id) =>{
+       console.log("UPdate data was used")
+
       try {
         const url = import.meta.env.VITE_API_URL;
 

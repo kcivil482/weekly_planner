@@ -12,9 +12,10 @@ export const getBoard = async(req, res) =>{
     * if the board doesn't alraedy exist in database make a new one
     *  
     */
-   const board  = await Board.findOne();
+   let board  = await Board.findOne();
+   console.log("getBoard called", board)
    if(!board){
-    const newBoard= new Board({
+     board= new Board({
         groups:{
             A:[],
             B:[],
@@ -26,10 +27,9 @@ export const getBoard = async(req, res) =>{
             H:[]
         }
     })
-    newBoard.save();
-    const board  = await Board.findOne();
+    board.save();
+    let board  = await Board.findOne();
    }
-   console.log(board)
    res.status(200).send( board);
 };
 
@@ -49,7 +49,7 @@ export const AddTask = async(req,res)=>{
         { return res.status(404).json({error:"no id found or id already in database" + id})}
         board.groups.A.push(id)
         await board.save();
-
+        console.log("Board After Add task: ", board)
         res.status(200).json(board);
     }catch{
         return res.status(404).json({error:"Board not updated "})
@@ -87,16 +87,20 @@ export const updateBoard = async (req,res)=>{
      * Cases:
      * 
      */
+
+ 
     try{
         const board = await Board.findOne();
+        console.log("update board board found:", board)
+        if(!board){ return res.status(404).json({error:"no board found"})}
         const { groups } = req.body
-        console.log("update board groups: " , groups, typeof(groups))
+        console.log("groups: ", groups)
         if(!groups) {return res.status(404).json({error:" Board data sent incorrectly"})}
-        console.log(board["groups"])
 
-        board["groups"] =JSON.parse(groups)
+        board["groups"] = groups;
         await board.save()
-        console.log(board)
+        console.log("Board after update board is called", board["groups"])
+
 
 
         res.status(200).json(board)
