@@ -14,7 +14,7 @@ const Column = ({id, Heading, Tasks, colNum}) => {
     //use getTask here
   }
   return (
-    <Flex flexDir={'column'} alignItems={"center"} textAlign={'center'} border={'1px solid lightgray'} borderRadius={'5px'} minH={'600px'} minW={'200px'}margin={'10px'} ref={setNodeRef}>
+    <Flex flexDir={'column'} alignItems={"center"} textAlign={'center'} border={'1px solid lightgray'} borderRadius={'5px'} minH={'600px'} minW={'300px'}margin={'10px'} ref={setNodeRef}>
       <Box margin="10px">
       <Heading>{Headings[Heading]}</Heading>
       </Box>

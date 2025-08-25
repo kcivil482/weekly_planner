@@ -2,7 +2,7 @@
 "use client"
 
 import React from 'react'
-import { Box, Flex, Heading } from '@chakra-ui/react';
+import { Box, Flex, Heading, Button } from '@chakra-ui/react';
 import { Avatar, AvatarGroup, Tabs, Link } from "@chakra-ui/react"
 
 
@@ -33,17 +33,18 @@ const Navbar = () => {
       </Tabs.List>
       <Tabs.Indicator rounded="12" />
     </Tabs.Root>
+    <Button variant={"plain"} asChild href="#">
         <Flex justifyContent={'space-evenly'} minW={'200px'}>
         <Heading> Login </Heading>
         <AvatarGroup>
          <Avatar.Root colorPalette={"blue"}>
           <Avatar.Fallback />
          <Avatar.Image />
-        </Avatar.Root>
+          </Avatar.Root>
         </AvatarGroup>
 
         </Flex>
-
+    </Button>
     </Flex>
   );
 }

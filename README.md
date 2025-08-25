@@ -7,3 +7,5 @@ Future Features:
 - Full monthly calendar view to see events
 - Focus mode ( track the amount time dedicated to tasks with breaks. )
 - Habit tracking and Statistics in a monthly view
+
+![Screenshot of Kanban board working](<Screenshot 2025-08-25 144758.png>)
